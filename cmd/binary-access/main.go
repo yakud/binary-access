@@ -27,6 +27,9 @@ func main() {
 	if err := tree.SetRuleBitByChainName(userReadAccess[0], "a.c"); err != nil {
 		log.Fatal(err)
 	}
+	if err := tree.SetRuleBitByChainName(userReadAccess[0], "a.b.g"); err != nil {
+		log.Fatal(err)
+	}
 
 	// set user 1 read access to "a.c.d.e" subtree
 	if err := tree.SetRuleBitByChainName(userReadAccess[1], "a.c.d.e"); err != nil {
@@ -81,8 +84,8 @@ func runChecks(accessChecker *access.Checker, userReadAccess []*access.Rule) {
 		fmt.Println("check done!")
 	}
 
-	if accessChecker.HasAccess("a.b.g", userReadAccess[0]) {
-		log.Fatal("FAILED! User 0 should not have access to a.b.g")
+	if !accessChecker.HasAccess("a.b.g", userReadAccess[0]) {
+		log.Fatal("FAILED! User 0 should have access to a.b.g")
 	} else {
 		fmt.Println("check done!")
 	}
