@@ -36,11 +36,11 @@ func (t *ChainTree) Add(name string, parent *Chain) (*Chain, error) {
 			return nil, errors.New("head already allocated and vertex parent is empty. you can make new tree")
 		}
 		v.Chain = bitarray.NewSparseBitArray()
-		//v.Chain = bitarray.NewBitArray(10000)
+		//v.Chain = bitarray.NewBitArray(1000000)
 		v.Name = name
 	} else {
 		v.Chain = bitarray.NewSparseBitArray().Or(parent.Chain)
-		//v.Chain = bitarray.NewBitArray(10000).Or(parent.Chain)
+		//v.Chain = bitarray.NewBitArray(1000000).Or(parent.Chain)
 		v.Name = t.GenerateName(parent.Name, name)
 	}
 

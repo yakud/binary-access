@@ -18,10 +18,10 @@ type Chain struct {
 
 // todo: serialize original Chain
 type marshaledChain struct {
-	TreeID   TreeID `json:"tree_id"`
-	Bit      Bit    `json:"bit"`
-	Name     string `json:"name"`
-	ChainHEX string `json:"chain_hex"`
+	TreeID TreeID      `json:"tree_id"`
+	Bit    Bit         `json:"bit"`
+	Name   string      `json:"name"`
+	Chain  interface{} `json:"chain"`
 }
 
 func (c *Chain) MarshalJSON() ([]byte, error) {
@@ -36,7 +36,7 @@ func (c *Chain) MarshalJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	marshaledChain.ChainHEX = string(chainHexBytes)
+	marshaledChain.Chain = string(chainHexBytes)
 
 	return json.Marshal(&marshaledChain)
 }
@@ -48,7 +48,7 @@ func (c *Chain) UnmarshalJSON(b []byte) error {
 	}
 
 	var err error
-	c.Chain, err = BitArrayDecode([]byte(marshaledChain.ChainHEX))
+	c.Chain, err = BitArrayDecode([]byte(marshaledChain.Chain.(string)))
 	if err != nil {
 		return err
 	}
