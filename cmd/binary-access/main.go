@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/yakud/binary-access/access"
+	bitarrayMarshaler "github.com/yakud/binary-access/access/bitarray"
 )
 
 func main() {
@@ -45,6 +46,7 @@ func main() {
 	}
 	fmt.Println("tree marshaled to JSON for:", time.Since(since))
 	fmt.Println(string(treeJson))
+	//fmt.Println("marshaled size:", len(treeJson), "b,", len(treeJson)/1024, "kb,", len(treeJson)/1024/1024, "mb")
 
 	unmarshaledTree := access.NewTree(0)
 	since = time.Now()
@@ -57,10 +59,10 @@ func main() {
 	fmt.Println("RUN unmarhaled checks")
 	runChecks(accessChecker, userReadAccess)
 
-	if enc, err := access.BitArrayEncode(userReadAccess[0].BitArray); err == nil {
+	if enc, err := bitarrayMarshaler.NewMarshaler(userReadAccess[0].BitArray).MarshalJSON(); err == nil {
 		fmt.Println("user0 bit array:", string(enc))
 	}
-	if enc, err := access.BitArrayEncode(userReadAccess[1].BitArray); err == nil {
+	if enc, err := bitarrayMarshaler.NewMarshaler(userReadAccess[1].BitArray).MarshalJSON(); err == nil {
 		fmt.Println("user1 bit array:", string(enc))
 	}
 }
